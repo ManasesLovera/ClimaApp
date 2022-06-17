@@ -47,9 +47,54 @@ const pause = async() => {
     ])
 }
 
+const readline = async (message) => {
 
+    console.log()
+    const {response} = await inquirer.prompt([
+        {
+            type:'input',
+            name:'response',
+            message
+        }
+    ])
+
+    return response
+}
+
+const showCities = async(cities = []) => {
+
+    let count = 1
+    const choices = []
+    cities.forEach( city => {
+        let idx = `${count}.`.green
+        choices.push({
+            value: city.id,
+            name: `${idx} ${city.place}`
+        })
+        count++
+    })
+
+    choices.unshift({
+        value: 0,
+        name: `${'0.'.green} Cancelar`
+    })
+
+    const questions = [{
+        type:'list',
+        name:'id',
+        message:'Seleccione el lugar: ',
+        choices
+    }]
+
+    const {id} = await inquirer.prompt(questions)
+
+    return id
+
+}
 
 module.exports = {
     showMenu,
-    pause
+    pause,
+    readline,
+    showCities
 }
